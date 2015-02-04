@@ -1,0 +1,44 @@
+<project>
+
+    <property name="src.dir" value="src"/>
+
+    <property name="build.dir" value="build"/>
+    <property name="classes.dir" value="${build.dir}/classes"/>
+    <property name="jar.dir" value="${build.dir}/jar"/>
+
+    <property name="main-class.name" value="InitialClass"/>
+    <property name="main-class" value="com.ci.${main-class.name}"/>
+    <property name="jar.name" value="${main-class.name}.jar"/>
+
+    <target name="clean">
+        <delete dir="${build.dir}"/>
+    </target>
+
+    <target name="compile">
+        <mkdir dir="${classes.dir}"/>
+        <javac srcdir="${src.dir}" destdir="${classes.dir}"/>
+    </target>
+
+    <target name="jar">
+        <mkdir dir="${jar.dir}"/>
+        <jar destfile="${jar.dir}/${jar.name}" basedir="${classes.dir}">
+            <manifest>
+                <attribute name="Main-Class" value="${main-class}"/>
+            </manifest>
+        </jar>
+    </target>
+
+
+    <target name="run">
+        <java jar="${jar.dir}/${jar.name}" fork="true"/>
+    </target>
+
+
+    <target name="buildAndRun">
+        <antcall target="clean"/>
+        <antcall target="compile"/>
+        <antcall target="jar"/>
+        <antcall target="run"/>
+    </target>
+
+</project>
