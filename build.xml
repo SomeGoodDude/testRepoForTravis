@@ -10,6 +10,9 @@
     <property name="main-class" value="com.ci.${main-class.name}"/>
     <property name="jar.name" value="${main-class.name}.jar"/>
 
+    <property name="test.junit.jar" value="lib/junit.jar"/>
+    <property name="test.dir" value="test"/>
+
     <target name="clean">
         <delete dir="${build.dir}"/>
     </target>
@@ -18,6 +21,16 @@
         <mkdir dir="${classes.dir}"/>
         <javac srcdir="${src.dir}" destdir="${classes.dir}"/>
     </target>
+
+    <target name="compileTest">
+        <mkdir dir="${classes.dir}"/>
+        <javac srcdir="${test.dir}" destdir="${classes.dir}">
+            <classpath>
+                <pathelement path="${test.junit.jar}"/>
+            </classpath>
+        </javac>
+    </target>
+
 
     <target name="jar">
         <mkdir dir="${jar.dir}"/>
@@ -33,6 +46,31 @@
     </target>
 
     <target name="test">
+
+        <antcall target="clean"/>
+        <antcall target="compile"/>
+        <antcall target="compileTest"/>
+
+        <junit
+                haltonerror="yes"
+                printsummary="yes"
+                haltonfailure="yes"
+                showoutput="yes"
+                logfailedtests="on"
+                filtertrace="on">
+
+            <formatter type="plain" usefile="false"/>
+            <classpath>
+                <pathelement location="${classes.dir}"/>
+                <pathelement location="${build.dir}"/>
+                <pathelement path="${test.junit.jar}"/>
+            </classpath>
+            <batchtest fork="yes">
+                <fileset dir="${test.dir}">
+                    <include name="**/*Test*.java"/>
+                </fileset>
+            </batchtest>
+        </junit>
     </target>
 
     <target name="build">
