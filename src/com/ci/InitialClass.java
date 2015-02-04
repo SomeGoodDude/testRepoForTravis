@@ -6,6 +6,6 @@ public class InitialClass {
     }
 
     public boolean isTestPassed() {
-        return true;
+        return false;
     }
 }
