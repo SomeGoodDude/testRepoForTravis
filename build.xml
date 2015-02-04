@@ -33,11 +33,14 @@
         <java jar="${jar.dir}/${jar.name}" fork="true"/>
     </target>
 
-
-    <target name="buildAndRun">
+    <target name="build">
         <antcall target="clean"/>
         <antcall target="compile"/>
         <antcall target="jar"/>
+    </target>
+
+    <target name="buildAndRun">
+        <antcall target="build"/>
         <antcall target="run"/>
     </target>
 
